@@ -4,6 +4,7 @@
 cd /home/no-fuckup-timer-bot/
 
 # Pull the latest changes from Git
+git fetch --all
 git pull
 
 # Restart Docker Compose
