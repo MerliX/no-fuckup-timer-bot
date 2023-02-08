@@ -12,8 +12,8 @@ db = SQLAlchemy(app)
 
 def setup_webhook():
     bot_token = os.environ.get('BOT_TOKEN')
-    heroku_app = os.environ.get('HEROKU_APP')
-    requests.post(f'https://api.telegram.org/bot{bot_token}/setWebhook?url=https://{heroku_app}.herokuapp.com/')
+    bot_url = os.environ.get('BOT_URL')
+    requests.post(f'https://api.telegram.org/bot{bot_token}/setWebhook?url={bot_url}')
 
 
 @app.route('/', methods=['POST'])
@@ -37,5 +37,5 @@ def handle_update():
 
 if __name__ == '__main__':
     db.create_all()
-    # setup_webhook()
+    setup_webhook()
     app.run(port=8000)
