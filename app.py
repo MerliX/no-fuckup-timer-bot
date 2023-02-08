@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ def setup_webhook():
 setup_webhook()
 
 @app.route('/', methods=['POST'])
-def handle_update(request):
+def handle_update():
     update = request.get_json()
     chat_id = update['message']['chat']['id']
     message = "This is a response from the bot"
