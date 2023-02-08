@@ -14,8 +14,8 @@ jobs:
     - name: Set up SSH
       uses: appleboy/ssh-action@v0.1.7
       with:
-        host: ${{ env.HOST }}
-        username: ${{ env.USERNAME }}
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: /home/no-fuckup-timer-bot/deploy.sh
