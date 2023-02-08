@@ -16,7 +16,7 @@ def setup_webhook():
     requests.post(f'https://api.telegram.org/bot{bot_token}/setWebhook?url={bot_url}')
 
 
-@app.route('/', methods=['POST'])
+@app.route('/bot/', methods=['POST'])
 def handle_update():
     update = request.get_json()
     message = update.get('message')
@@ -38,4 +38,4 @@ def handle_update():
 if __name__ == '__main__':
     db.create_all()
     setup_webhook()
-    app.run(port=8000)
+    app.run(port=8080)
