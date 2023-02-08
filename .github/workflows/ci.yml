@@ -6,7 +6,8 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
+    environment: no-fuckup-timer-bot
     runs-on: ubuntu-latest
 
     steps:
