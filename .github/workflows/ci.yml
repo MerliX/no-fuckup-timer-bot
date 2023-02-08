@@ -21,7 +21,7 @@ jobs:
       with:
         host: ${{ env.HOST }}
         username: ${{ env.USERNAME }}
-        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Run script on remote host
       run: |
