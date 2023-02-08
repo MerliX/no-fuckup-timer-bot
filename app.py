@@ -12,8 +12,8 @@ def setup_webhook():
 setup_webhook()
 
 @app.route('/', methods=['POST'])
-def handle_update():
-    update = requests.get_json()
+def handle_update(request):
+    update = request.get_json()
     chat_id = update['message']['chat']['id']
     message = "This is a response from the bot"
     bot_token = os.environ.get('BOT_TOKEN')
