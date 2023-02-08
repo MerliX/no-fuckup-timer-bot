@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  SCRIPT_PATH: /home/no-fuckup-timer-bot/deploy.sh
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Run script on remote host
+      run: |
+        ssh ${{ env.USERNAME }}@${{ env.HOST }} 'bash -s' < ${{ env.SCRIPT_PATH }}

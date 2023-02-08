@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: botdb
+      POSTGRES_USER: botuser
+      POSTGRES_PASSWORD: botpass
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 --workers 4 app:app
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    environment:
+      DATABASE_URL: postgresql://botuser:botpass@db/botdb
+      BOT_TOKEN: your_telegram_bot_token
+      HEROKU_APP: your_heroku_app_name
+    depends_on:
+      - db
