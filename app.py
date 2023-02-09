@@ -2,7 +2,7 @@ import datetime
 import os
 import requests
 import sqlalchemy
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 import logging
@@ -30,7 +30,7 @@ def create_app():
         created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
         def __repr__(self):
-            return f'<Failure id={self.id} comment={self.comment}>'
+            return f'<Failure id={self.id} comment={self.comment} user={self.user}>'
 
     with app.app_context():
         try:
@@ -59,6 +59,11 @@ def create_app():
             bot_token = os.environ.get('BOT_TOKEN')
             requests.post(f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={response}')
         return "ok"
+
+    @app.route('/bot/list/', methods=['GET'])
+    def handle_list():
+        failures = Failure.query.all()
+        return render_template('failures.html', failures=failures)
 
     return app
 
