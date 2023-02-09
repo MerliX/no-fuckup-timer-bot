@@ -30,7 +30,7 @@ def create_app():
         created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
         def __repr__(self):
-            return f'<Failure id={self.id} comment={self.comment} user={self.user}>'
+            return f'<Failure id={self.id} comment={self.comment} user={self.user} created_at={self.created_at}>'
 
     with app.app_context():
         try:
