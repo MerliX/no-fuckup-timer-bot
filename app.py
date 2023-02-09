@@ -1,9 +1,10 @@
+import datetime
 import os
 import requests
+import sqlalchemy
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
-from models import Failure
 import logging
 
 logger = logging.getLogger(__name__)
@@ -21,8 +22,20 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
     db = SQLAlchemy(app)
+
+    class Failure(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        comment = db.Column(db.String(), nullable=False)
+        created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+
+        def __repr__(self):
+            return f'<Failure id={self.id} comment={self.comment}>'
+
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+        except sqlalchemy.exc.IntegrityError:
+            pass
 
     setup_webhook()
     @app.route('/bot/', methods=['POST'])
