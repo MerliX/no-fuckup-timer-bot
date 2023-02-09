@@ -1,11 +1,16 @@
 version: '3'
 services:
-  db:
+  postgresql:
     image: postgres
     environment:
       POSTGRES_DB: botdb
       POSTGRES_USER: botuser
       POSTGRES_PASSWORD: botpass
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   web:
     build: .
     command: "gunicorn --log-level INFO --bind 0.0.0.0:8080 --workers 4 'app:create_app()'"
@@ -18,4 +23,5 @@ services:
       BOT_TOKEN: your_telegram_bot_token
       BOT_URL: your_heroku_app_name
     depends_on:
-      - db
+      postgresql:
+        condition: service_healthy
