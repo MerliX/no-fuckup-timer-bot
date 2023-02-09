@@ -26,6 +26,7 @@ def create_app():
     class Failure(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         comment = db.Column(db.String(), nullable=False)
+        user = db.Column(db.String(), nullable=False)
         created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
         def __repr__(self):
@@ -47,9 +48,9 @@ def create_app():
         if message and message.get('text'):
             command, *comment = message['text'].split()
             chat_id = message['chat']['id']
-            if command == '/failure' and comment:
+            if command == '/proeb' and comment:
                 comment = ' '.join(comment)
-                failure = Failure(comment=comment)
+                failure = Failure(comment=comment, user=str(message.get('from')))
                 db.session.add(failure)
                 db.session.commit()
                 response = f"Failure recorded: '{comment}'"
