@@ -53,9 +53,9 @@ def create_app():
                 failure = Failure(comment=comment, user=str(message.get('from')))
                 db.session.add(failure)
                 db.session.commit()
-                response = f"Failure recorded: '{comment}'"
+                response = f"Проеб засчитан: '{comment}'"
             else:
-                response = "Invalid command or comment"
+                response = "Укажи, что именно пошло не так (пример: `/proeb я покакал`)"
             bot_token = os.environ.get('BOT_TOKEN')
             requests.post(f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={response}')
         return "ok"
