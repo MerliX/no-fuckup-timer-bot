@@ -48,14 +48,22 @@ def create_app():
         if message and message.get('text'):
             command, *comment = message['text'].split()
             chat_id = message['chat']['id']
+            response = "Ничего не понятно"
             if command == '/proeb' and comment:
                 comment = ' '.join(comment)
                 failure = Failure(comment=comment, user=str(message.get('from')))
                 db.session.add(failure)
                 db.session.commit()
                 response = f"Проеб засчитан: '{comment}'"
-            else:
+            elif command == '/proeb':
                 response = "Укажи, что именно пошло не так (пример: `/proeb я покакал`)"
+            elif command == '/last':
+                # Get the latest failure from the database
+                latest_failure = Failure.query.order_by(Failure.created_at.desc()).first()
+                if latest_failure:
+                    time_passed = datetime.datetime.now() - latest_failure.created_at
+                    response=f'Минут с последнего проеба: {time_passed.minutes}'
+
             bot_token = os.environ.get('BOT_TOKEN')
             requests.post(f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={response}')
         return "ok"
