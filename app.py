@@ -48,7 +48,7 @@ def create_app():
         if message and message.get('text'):
             command, *comment = message['text'].split()
             chat_id = message['chat']['id']
-            response = "Ничего не понятно"
+            response = f"Ничего не понятно (команда {command})"
             if command == '/proeb' and comment:
                 comment = ' '.join(comment)
                 failure = Failure(comment=comment, user=str(message.get('from')))
