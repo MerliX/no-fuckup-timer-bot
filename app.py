@@ -49,20 +49,24 @@ def create_app():
             command, *comment = message['text'].split()
             chat_id = message['chat']['id']
             response = f"Ничего не понятно (команда {command})"
+            latest_failure = Failure.query.order_by(Failure.created_at.desc()).first()
+            minutes_passed = 0
+            if latest_failure:
+                time_passed = datetime.datetime.now() - latest_failure.created_at
+                minutes_passed = (time_passed.seconds//60)%60
             if command in ('/proeb', '/proeb@badbartimerbot') and comment:
                 comment = ' '.join(comment)
                 failure = Failure(comment=comment, user=str(message.get('from')))
                 db.session.add(failure)
                 db.session.commit()
-                response = f"Проеб засчитан: '{comment}'"
+
+                response = f"Проеб засчитан: '{comment}'\nПродержались минут: {minutes_passed}"
             elif command in ('/proeb', '/proeb@badbartimerbot'):
                 response = "Укажи, что именно пошло не так (пример: `/proeb я покакал`)"
             elif command in ('/last', '/last@badbartimerbot'):
                 # Get the latest failure from the database
-                latest_failure = Failure.query.order_by(Failure.created_at.desc()).first()
                 if latest_failure:
-                    time_passed = datetime.datetime.now() - latest_failure.created_at
-                    response=f'Минут с последнего проеба: {(time_passed.seconds//60)%60}'
+                    response=f'Минут с последнего проеба: {minutes_passed}'
 
             bot_token = os.environ.get('BOT_TOKEN')
             requests.post(f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={response}')
