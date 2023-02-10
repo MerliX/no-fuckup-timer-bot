@@ -49,15 +49,15 @@ def create_app():
             command, *comment = message['text'].split()
             chat_id = message['chat']['id']
             response = f"Ничего не понятно (команда {command})"
-            if command == '/proeb' and comment:
+            if command in ('/proeb', '/proeb@badbartimerbot') and comment:
                 comment = ' '.join(comment)
                 failure = Failure(comment=comment, user=str(message.get('from')))
                 db.session.add(failure)
                 db.session.commit()
                 response = f"Проеб засчитан: '{comment}'"
-            elif command == '/proeb':
+            elif command in ('/proeb', '/proeb@badbartimerbot'):
                 response = "Укажи, что именно пошло не так (пример: `/proeb я покакал`)"
-            elif command == '/last':
+            elif command in ('/last', '/last@badbartimerbot'):
                 # Get the latest failure from the database
                 latest_failure = Failure.query.order_by(Failure.created_at.desc()).first()
                 if latest_failure:
