@@ -62,7 +62,7 @@ def create_app():
                 latest_failure = Failure.query.order_by(Failure.created_at.desc()).first()
                 if latest_failure:
                     time_passed = datetime.datetime.now() - latest_failure.created_at
-                    response=f'Минут с последнего проеба: {time_passed.minutes}'
+                    response=f'Минут с последнего проеба: {(time_passed.seconds//60)%60}'
 
             bot_token = os.environ.get('BOT_TOKEN')
             requests.post(f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={response}')
