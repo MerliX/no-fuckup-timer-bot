@@ -53,7 +53,7 @@ def create_app():
             minutes_passed = 0
             if latest_failure:
                 time_passed = datetime.datetime.now() - latest_failure.created_at
-                minutes_passed = (time_passed.seconds//60)%60
+                minutes_passed = time_passed.seconds//60
             if command in ('/proeb', '/proeb@badbartimerbot') and comment:
                 comment = ' '.join(comment)
                 failure = Failure(comment=comment, user=str(message.get('from')))
@@ -66,7 +66,7 @@ def create_app():
             elif command in ('/last', '/last@badbartimerbot'):
                 # Get the latest failure from the database
                 if latest_failure:
-                    response=f'Минут с последнего проеба: {minutes_passed}'
+                    response=f'Минут без проеба: {minutes_passed}'
 
             bot_token = os.environ.get('BOT_TOKEN')
             requests.post(f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={response}')
