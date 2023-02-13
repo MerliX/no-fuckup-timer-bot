@@ -17,7 +17,7 @@ def setup_webhook():
     logger.info("Bot webhook set")
 
 
-def convert_timedelta_to_russian_string(td: datetime.timedelta) -> str:
+def convert_timedelta_to_russian_string(td: datetime.timedelta):
     days, remainder = divmod(td.total_seconds(), 86400)
     hours, remainder = divmod(remainder, 3600)
     minutes, seconds = divmod(remainder, 60)
@@ -28,7 +28,10 @@ def convert_timedelta_to_russian_string(td: datetime.timedelta) -> str:
         result.append(f"{int(hours)} часа(ов)")
     if int(minutes) > 0:
         result.append(f"{int(minutes)} минут(ы)")
+    if not result:
+        return "0 минут"
     return " ".join(result)
+
 
 def create_app():
     app = Flask(__name__)
