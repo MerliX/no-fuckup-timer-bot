@@ -4,7 +4,7 @@ import requests
 import sqlalchemy
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
-
+import json
 import logging
 
 logger = logging.getLogger(__name__)
