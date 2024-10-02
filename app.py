@@ -48,6 +48,10 @@ def create_app():
         def __repr__(self):
             return f'{self.user} {self.created_at}: {self.comment}'
 
+        @property
+        def user_dict(self):
+            return json.loads(self.user)
+
     with app.app_context():
         try:
             db.create_all()
