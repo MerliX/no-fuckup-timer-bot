@@ -1,3 +1,9 @@
 {% for failure in failures %}
-{{ failure }} <br>
+    <b>
+        {{ failure.user.get("first_name", '') }}
+        {{ failure.get("last_name", '') }}
+        {{ failure.get("username", '') }}
+    </b>
+    {{ failure.created_at }}:
+    {{ failure.comment }} <br>
 {% endfor %}
