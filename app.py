@@ -93,7 +93,7 @@ def create_app():
 
     @app.route('/bot/list/', methods=['GET'])
     def handle_list():
-        failures = Failure.query.all()
+        failures = Failure.query.order_by(Failure.created_at.desc()).all()
         return render_template('failures.html', failures=failures)
 
     return app
