@@ -10,6 +10,3 @@ services:
       DATABASE_URL: postgresql://fuckup:fuckup@postgresql/fuckup
       BOT_TOKEN: your_telegram_bot_token
       BOT_URL: your_heroku_app_name
-    depends_on:
-      postgresql:
-        condition: service_healthy

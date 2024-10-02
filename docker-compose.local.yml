@@ -19,6 +19,9 @@ services:
       DATABASE_URL: postgresql://postgresql:fuckup@postgresql/fuckup
     volumes:
       - .:/app
+    depends_on:
+      postgresql:
+        condition: service_healthy
 
 volumes:
   db-data:
