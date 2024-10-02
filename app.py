@@ -4,7 +4,7 @@ import requests
 import sqlalchemy
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
-import json
+import ast
 import logging
 
 logger = logging.getLogger(__name__)
@@ -50,7 +50,7 @@ def create_app():
 
         @property
         def user_dict(self):
-            return json.loads(self.user)
+            return ast.literal_eval(self.user)
 
     with app.app_context():
         try:
