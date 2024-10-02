@@ -1,0 +1,25 @@
+
+services:
+  postgresql:
+    image: postgres
+    environment:
+      POSTGRES_DB: botdb
+      POSTGRES_USER: botuser
+      POSTGRES_PASSWORD: botpass
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  web:
+    environment:
+      DATABASE_URL: postgresql://postgresql:fuckup@postgresql/fuckup
+    volumes:
+      - .:/app
+
+volumes:
+  db-data:
+    driver: local

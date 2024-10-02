@@ -1,33 +1,15 @@
-version: '2.3'
 services:
-  postgresql:
-    image: postgres
-    environment:
-      POSTGRES_DB: botdb
-      POSTGRES_USER: botuser
-      POSTGRES_PASSWORD: botpass
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - db-data:/var/lib/postgresql/data
   web:
+    platform: linux/amd64
     build: .
+
     command: "gunicorn --access-logfile - --error-logfile - --log-level INFO --bind 0.0.0.0:8080 --workers 4 'app:create_app()'"
-    volumes:
-      - .:/app
     ports:
       - 8080:8080
     environment:
-      DATABASE_URL: postgresql://botuser:botpass@postgresql/botdb
+      DATABASE_URL: postgresql://fuckup:fuckup@postgresql/fuckup
       BOT_TOKEN: your_telegram_bot_token
       BOT_URL: your_heroku_app_name
     depends_on:
       postgresql:
         condition: service_healthy
-
-volumes:
-  db-data:
-    driver: local
