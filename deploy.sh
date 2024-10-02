@@ -12,4 +12,4 @@ docker compose build
 
 # Restart Docker Compose
 
-docke compose up -d
+docker compose up -d
